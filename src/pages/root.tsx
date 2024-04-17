@@ -32,7 +32,9 @@ export const routes = [
   },
   {
     path: "/user-management",
-    element: <UserManager />,
+    element: (
+      <UserManager />
+    )
   },
   {
     path: "/login",
