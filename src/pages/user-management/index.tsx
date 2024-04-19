@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import CreateUser from './components/CreateUser';
+import UpdateUser from './components/UpdateUser';
 
 const UserManager = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -11,6 +13,14 @@ const UserManager = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openModalUpdate = () => {
+    setIsModalUpdateOpen(true);
+  };
+
+  const closeModalUpdate = () => {
+    setIsModalUpdateOpen(false);
   };
 
   return (
@@ -58,6 +68,7 @@ const UserManager = () => {
               </button>
             </div>
           </div>
+          {isModalUpdateOpen && <UpdateUser onClose={closeModalUpdate} />}
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -76,7 +87,12 @@ const UserManager = () => {
                   <td className="px-4 py-3">carlos@mail.com</td>
                   <td className="px-4 py-3 max-w-[12rem]">Administrator</td>
                   <td className="px-4 py-3 flex items-center justify-end">
-                    <button type="button" data-modal-target="updateUserModal" data-modal-toggle="updateUserModal" className="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200">
+                    <button
+                      type="button"
+                      onClick={openModalUpdate}
+                      data-modal-target="updateUserModal"
+                      data-modal-toggle="updateUserModal"
+                      className="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200">
                       <svg className="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
