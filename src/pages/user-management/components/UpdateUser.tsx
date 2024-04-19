@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner'
+
 
 type OnCloseFunction = () => void;
 
 const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
     const handleSubmit = (event: React.FormEvent) => {
+        toast.info('User updated')
         event.preventDefault();
         onClose();
     };
+
+    const [formData, setFormData] = useState({
+        username: 'Guamamole',
+        name: 'Carlos Soto',
+        email: 'carlos@mail.com',
+        userType: 'administrator'
+    });
+
+    const handleChange = (e: any) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
 
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -34,7 +52,11 @@ const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                                                 id="username"
                                                 autoComplete="username"
                                                 required
-                                                className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                value={formData.username}
+                                                onChange={handleChange}
+                                                className="mt-1 focus:ring-primary-500 
+                                                focus:border-primary-500 block w-full 
+                                                shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
                                             />
                                         </div>
                                         <div className="mt-4">
@@ -47,7 +69,9 @@ const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                                                 id="name"
                                                 autoComplete="name"
                                                 required
-                                                className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
                                             />
                                         </div>
                                         <div className="mt-4">
@@ -60,7 +84,9 @@ const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                                                 id="email"
                                                 autoComplete="email"
                                                 required
-                                                className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
                                             />
                                         </div>
                                         <div className="mt-4">
@@ -72,7 +98,12 @@ const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                                                 name="userType"
                                                 autoComplete="userType"
                                                 required
-                                                className="mt-1 block w-full py-2 pl-3 pr-10 border border-gray-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                value={formData.userType}
+                                                onChange={handleChange}
+                                                className="mt-1 block w-full py-2 pl-3 pr-10 border 
+                                                border-gray-300 bg-white dark:bg-gray-700 text-gray-900 
+                                                dark:text-gray-200 rounded-md shadow-sm focus:outline-none 
+                                                focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                                             >
                                                 <option value="administrator">Administrator</option>
                                                 <option value="editor">Editor</option>
@@ -86,7 +117,7 @@ const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                         <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                             <button
                                 type="submit"
-                                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm"
                             >
                                 Update
                             </button>
