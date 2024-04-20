@@ -1,3 +1,4 @@
+import SalesDashboard from "./components/SalesDashboard";
 import SalesStats from "./components/SalesStats";
 import SalesTable from "./components/SalesTable";
 import Layout from "./components/Layout";
@@ -7,8 +8,9 @@ const Sales = () => {
     <Layout>
       <SalesStats />
       <SalesTable />
+      <SalesDashboard/>
     </Layout>
   );
 };
 
-export { Sales };
+export default Sales ;
