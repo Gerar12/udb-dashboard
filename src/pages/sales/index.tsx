@@ -1,9 +1,16 @@
+import SalesDashboard from "./components/SalesDashboard";
+import SalesStats from "./components/SalesStats";
+import SalesTable from "./components/SalesTable";
+import Layout from "./components/Layout";
+
 const Sales = () => {
   return (
-    <>
-      <p>Page sales or products</p>
-    </>
+    <Layout>
+      <SalesStats />
+      <SalesTable />
+      <SalesDashboard/>
+    </Layout>
   );
 };
 
-export default Sales;
+export default Sales ;
