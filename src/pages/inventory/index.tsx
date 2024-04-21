@@ -1,32 +1,35 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Fragment, useRef, useState } from 'react'
-import { Modal } from './components/modal'
+import { useState } from "react";
+import { Modal } from "./components/modal";
 
 const Inventory = () => {
   const stats = [
-    { name: 'Total de productos', stat: '50' },
-    { name: 'Nuevos productos ingresados', stat: '5' },
-    { name: 'Avg. Click Rate', stat: '24.57%' },
+    { name: "Total de productos", stat: "50" },
+    { name: "Nuevos productos ingresados", stat: "5" },
+    { name: "Avg. Click Rate", stat: "24.57%" },
   ];
 
-  const [open, setOpen] = useState(true)
-
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="p-6">
-      
       <Modal open={open} setOpen={setOpen} />
       <div className="flex flex-col md:flex-row items-start justify-between mb-8">
         <div className="md:w-2/3">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">INVENTARIO</h1>
-<br></br>
+          <br></br>
           <div>
             <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
               {stats.map((item) => (
-                <div key={item.name} className="bg-white border border-gray-200 rounded-lg px-4 py-5">
-                  <dt className="truncate text-sm font-medium text-gray-500">{item.name}</dt>
-                  <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{item.stat}</dd>
+                <div
+                  key={item.name}
+                  className="bg-white border border-gray-200 rounded-lg px-4 py-5"
+                >
+                  <dt className="truncate text-sm font-medium text-gray-500">
+                    {item.name}
+                  </dt>
+                  <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                    {item.stat}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -35,10 +38,18 @@ const Inventory = () => {
           <br></br>
 
           <div className="flex space-x-4">
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">Categoría 1</button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">Categoría 2</button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">Categoría 3</button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">Categoría 4</button>
+            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
+              Categoría 1
+            </button>
+            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
+              Categoría 2
+            </button>
+            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
+              Categoría 3
+            </button>
+            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
+              Categoría 4
+            </button>
           </div>
         </div>
 
@@ -65,88 +76,136 @@ const Inventory = () => {
             </svg>
           </div>
           {/* Botón envuelto dentro del componente Link */}
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none" onClick={() => { setOpen(!open) }}>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+            onClick={() => {
+              setOpen(!open);
+            }}
+          >
             Agregar Nuevo producto
           </button>
         </div>
       </div>
 
       <div className="overflow-x-auto">
-  <table className="min-w-full divide-y divide-gray-200">
-    <thead className="bg-gray-50">
-      <tr>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Numero
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          ID del producto
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Nombre del producto
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Descripcion del producto
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Precio
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Categoria
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Numero en existencias
-        </th>
-        {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Numero
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                ID del producto
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Nombre del producto
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Descripcion del producto
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Precio
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Categoria
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Numero en existencias
+              </th>
+              {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
           Acciones
         </th> */}
-      </tr>
-    </thead>
-    <tbody className="bg-white divide-y divide-gray-200">
-      <tr className="bg-gray-50">
-        <td className="px-6 py-4 whitespace-nowrap">1</td>
-        <td className="px-6 py-4 whitespace-nowrap">#784767</td>
-        <td className="px-6 py-4 whitespace-nowrap">Producto 1</td>
-        <td className="px-6 py-4 whitespace-nowrap">Descripción del Producto 1</td>
-        <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
-        <td className="px-6 py-4 whitespace-nowrap">Categoría 1</td>
-        <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
-          <span className="inline-block bg-green-500 text-white px-2 py-1 rounded-md">25</span>
-          <button className="text-red-500 hover:text-red-700 focus:outline-none">Eliminar</button>
-          <button className="text-blue-500 hover:text-blue-700 focus:outline-none">Editar</button>
-        </td>
-      </tr>
-      <tr className="bg-white">
-        <td className="px-6 py-4 whitespace-nowrap">2</td>
-        <td className="px-6 py-4 whitespace-nowrap">#784768</td>
-        <td className="px-6 py-4 whitespace-nowrap">Producto 2</td>
-        <td className="px-6 py-4 whitespace-nowrap">Descripción del Producto 2</td>
-        <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
-        <td className="px-6 py-4 whitespace-nowrap">Categoría 2</td>
-        <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
-          <span className="inline-block bg-yellow-500 text-white px-2 py-1 rounded-md">10</span>
-          <button className="text-red-500 hover:text-red-700 focus:outline-none">Eliminar</button>
-          <button className="text-blue-500 hover:text-blue-700 focus:outline-none">Editar</button>
-        </td>
-      </tr>
-      <tr className="bg-gray-50">
-        <td className="px-6 py-4 whitespace-nowrap">3</td>
-        <td className="px-6 py-4 whitespace-nowrap">#784769</td>
-        <td className="px-6 py-4 whitespace-nowrap">Producto 3</td>
-        <td className="px-6 py-4 whitespace-nowrap">Descripción del Producto 3</td>
-        <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
-        <td className="px-6 py-4 whitespace-nowrap">Categoría 3</td>
-        <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
-          <span className="inline-block bg-red-500 text-white px-2 py-1 rounded-md">0</span>
-          <button className="text-red-500 hover:text-red-700 focus:outline-none">Eliminar</button>
-          <button className="text-blue-500 hover:text-blue-700 focus:outline-none">Editar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-      
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            <tr className="bg-gray-50">
+              <td className="px-6 py-4 whitespace-nowrap">1</td>
+              <td className="px-6 py-4 whitespace-nowrap">#784767</td>
+              <td className="px-6 py-4 whitespace-nowrap">Producto 1</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                Descripción del Producto 1
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
+              <td className="px-6 py-4 whitespace-nowrap">Categoría 1</td>
+              <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
+                <span className="inline-block bg-green-500 text-white px-2 py-1 rounded-md">
+                  25
+                </span>
+                <button className="text-red-500 hover:text-red-700 focus:outline-none">
+                  Eliminar
+                </button>
+                <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr className="bg-white">
+              <td className="px-6 py-4 whitespace-nowrap">2</td>
+              <td className="px-6 py-4 whitespace-nowrap">#784768</td>
+              <td className="px-6 py-4 whitespace-nowrap">Producto 2</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                Descripción del Producto 2
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
+              <td className="px-6 py-4 whitespace-nowrap">Categoría 2</td>
+              <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
+                <span className="inline-block bg-yellow-500 text-white px-2 py-1 rounded-md">
+                  10
+                </span>
+                <button className="text-red-500 hover:text-red-700 focus:outline-none">
+                  Eliminar
+                </button>
+                <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr className="bg-gray-50">
+              <td className="px-6 py-4 whitespace-nowrap">3</td>
+              <td className="px-6 py-4 whitespace-nowrap">#784769</td>
+              <td className="px-6 py-4 whitespace-nowrap">Producto 3</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                Descripción del Producto 3
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
+              <td className="px-6 py-4 whitespace-nowrap">Categoría 3</td>
+              <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
+                <span className="inline-block bg-red-500 text-white px-2 py-1 rounded-md">
+                  0
+                </span>
+                <button className="text-red-500 hover:text-red-700 focus:outline-none">
+                  Eliminar
+                </button>
+                <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                  Editar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
   );
 };
 

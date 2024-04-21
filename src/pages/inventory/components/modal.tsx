@@ -1,19 +1,23 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
-import { Fragment, useRef, useState } from 'react'
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
+import { Fragment, useRef, useState } from "react";
 
 interface modalprops {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
-  const cancelButtonRef = useRef(null)
-
+  const cancelButtonRef = useRef(null);
 
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          initialFocus={cancelButtonRef}
+          onClose={setOpen}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -40,35 +44,87 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                      <ExclamationTriangleIcon
+                        className="h-6 w-6 text-red-600"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-base font-semibold leading-6 text-gray-900"
+                      >
                         Estas ingresando un nuevo producto
                       </Dialog.Title>
                       {/* contenido del modal */}
                       <div className="p-6">
-                        <h1 className="text-3xl font-bold text-gray-800 mb-4">Agregar Nuevo Producto</h1>
+                        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+                          Agregar Nuevo Producto
+                        </h1>
                         <form className="max-w-lg mx-auto">
                           <div className="mb-4">
-                            <label htmlFor="id" className="block text-gray-700 text-sm font-bold mb-2">ID del Producto</label>
-                            <input type="text" id="id" className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400" />
+                            <label
+                              htmlFor="id"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              ID del Producto
+                            </label>
+                            <input
+                              type="text"
+                              id="id"
+                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                            />
                           </div>
                           <div className="mb-4">
-                            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto</label>
-                            <input type="text" id="name" className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400" />
+                            <label
+                              htmlFor="name"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Nombre del Producto
+                            </label>
+                            <input
+                              type="text"
+                              id="name"
+                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                            />
                           </div>
                           <div className="mb-4">
-                            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción del Producto</label>
-                            <textarea id="description" rows="4" className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"></textarea>
+                            <label
+                              htmlFor="description"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Descripción del Producto
+                            </label>
+                            <textarea
+                              id="description"
+                              rows={4}
+                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                            ></textarea>
                           </div>
                           <div className="mb-4">
-                            <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio</label>
-                            <input type="text" id="price" className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400" />
+                            <label
+                              htmlFor="price"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Precio
+                            </label>
+                            <input
+                              type="text"
+                              id="price"
+                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                            />
                           </div>
                           <div className="mb-4">
-                            <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">Categoría</label>
-                            <select id="category" className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400">
+                            <label
+                              htmlFor="category"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Categoría
+                            </label>
+                            <select
+                              id="category"
+                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                            >
                               <option value="category1">Categoría 1</option>
                               <option value="category2">Categoría 2</option>
                               <option value="category3">Categoría 3</option>
@@ -76,18 +132,40 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                             </select>
                           </div>
                           <div className="mb-4">
-                            <label htmlFor="stock" className="block text-gray-700 text-sm font-bold mb-2">En Existencia</label>
+                            <label
+                              htmlFor="stock"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              En Existencia
+                            </label>
                             <div className="flex">
-                              <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded-l-md hover:bg-blue-600 focus:outline-none">-</button>
-                              <input type="text" id="stock" className="px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-400 w-full" />
-                              <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 focus:outline-none">+</button>
+                              <button
+                                type="button"
+                                className="bg-blue-500 text-white px-4 py-2 rounded-l-md hover:bg-blue-600 focus:outline-none"
+                              >
+                                -
+                              </button>
+                              <input
+                                type="text"
+                                id="stock"
+                                className="px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-400 w-full"
+                              />
+                              <button
+                                type="button"
+                                className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 focus:outline-none"
+                              >
+                                +
+                              </button>
                             </div>
                           </div>
-                          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Agregar Producto</button>
+                          <button
+                            type="submit"
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none"
+                          >
+                            Agregar Producto
+                          </button>
                         </form>
                       </div>
-
-
                     </div>
                   </div>
                   <div className="mt-5 sm:ml-10 sm:mt-4 sm:flex sm:pl-4">
