@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 interface EditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-const EditModal = ({ isOpen, onClose }: EditModalProps) => {
+const EditModal = ({ open, setOpen }: EditModalProps) => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -13,7 +13,7 @@ const EditModal = ({ isOpen, onClose }: EditModalProps) => {
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
 
-  if (!isOpen) return null;
+  if (!open) return null;
 
   return (
     <>
@@ -134,7 +134,7 @@ const EditModal = ({ isOpen, onClose }: EditModalProps) => {
                   <button
                     type="button"
                     className="inline-flex justify-center w-full px-4 py-2 mt-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    onClick={onClose}
+                    onClick={() => setOpen(false)}
                   >
                     Cancelar
                   </button>
@@ -148,4 +148,4 @@ const EditModal = ({ isOpen, onClose }: EditModalProps) => {
   );
 };
 
-export default EditModal;
+export { EditModal };

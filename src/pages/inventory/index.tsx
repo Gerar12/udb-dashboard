@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal } from "./components/modal";
+import { EditModal } from "./components/edit-modal";
 
 const Inventory = () => {
   const stats = [
@@ -9,10 +10,12 @@ const Inventory = () => {
   ];
 
   const [open, setOpen] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   return (
     <div className="p-6">
       <Modal open={open} setOpen={setOpen} />
+      <EditModal open={editModal} setOpen={setEditModal} />
       <div className="flex flex-col md:flex-row items-start justify-between mb-8">
         <div className="md:w-2/3">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">INVENTARIO</h1>
@@ -155,7 +158,12 @@ const Inventory = () => {
                 <button className="text-red-500 hover:text-red-700 focus:outline-none">
                   Eliminar
                 </button>
-                <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                <button
+                  className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                  onClick={() => {
+                    setEditModal(!editModal);
+                  }}
+                >
                   Editar
                 </button>
               </td>
@@ -176,7 +184,12 @@ const Inventory = () => {
                 <button className="text-red-500 hover:text-red-700 focus:outline-none">
                   Eliminar
                 </button>
-                <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                <button
+                  className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                  onClick={() => {
+                    setEditModal(!editModal);
+                  }}
+                >
                   Editar
                 </button>
               </td>
@@ -197,7 +210,12 @@ const Inventory = () => {
                 <button className="text-red-500 hover:text-red-700 focus:outline-none">
                   Eliminar
                 </button>
-                <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                <button
+                  className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                  onClick={() => {
+                    setEditModal(!editModal);
+                  }}
+                >
                   Editar
                 </button>
               </td>
