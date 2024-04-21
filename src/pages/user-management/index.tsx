@@ -74,7 +74,7 @@ const UserManager = () => {
                 onClick={openModal}
                 data-modal-target="createUserModal"
                 data-modal-toggle="createUserModal"
-                className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                className="flex items-center justify-center text-primary-700 bg-white hover:bg-gray-200 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 border border-gray-300"
               >
                 <PlusIcon className="w-5 h-5 text-gray-500 " />
                 Add User
