@@ -1,4 +1,3 @@
-import { useCategoriaStore } from "@/context/catgories-store";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { Fragment, useRef } from "react";
