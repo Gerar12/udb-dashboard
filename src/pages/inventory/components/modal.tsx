@@ -1,13 +1,20 @@
+import { useCategoriaStore } from "@/context/catgories-store";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
+import { useFetchCategories } from "@/hooks/categories";
 
 interface modalprops {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
+  const { data } = useFetchCategories();
   const cancelButtonRef = useRef(null);
+
+  if (!data) {
+    return <div>Loading....</div>;
+  }
 
   return (
     <>
@@ -125,9 +132,11 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                               id="category"
                               className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
                             >
-                              <option value="category1">Categoría 1</option>
-                              <option value="category2">Categoría 2</option>
-                              <option value="category3">Categoría 3</option>
+                              {data.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                  {category.name}
+                                </option>
+                              ))}
                               {/* Agrega más opciones de categorías aquí */}
                             </select>
                           </div>

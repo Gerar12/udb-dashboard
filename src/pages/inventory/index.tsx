@@ -1,16 +1,26 @@
 import { useState } from "react";
 import { Modal } from "./components/modal";
 import { EditModal } from "./components/edit-modal";
+import { useFetchCategories } from "@/hooks/categories";
+
+const stats = [
+  { name: "Total de productos", stat: "50" },
+  { name: "Nuevos productos ingresados", stat: "5" },
+  { name: "Avg. Click Rate", stat: "24.57%" },
+];
 
 const Inventory = () => {
-  const stats = [
-    { name: "Total de productos", stat: "50" },
-    { name: "Nuevos productos ingresados", stat: "5" },
-    { name: "Avg. Click Rate", stat: "24.57%" },
-  ];
-
   const [open, setOpen] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const { data, isLoading } = useFetchCategories();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className="p-6">
@@ -41,18 +51,14 @@ const Inventory = () => {
           <br></br>
 
           <div className="flex space-x-4">
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
-              Categoría 1
-            </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
-              Categoría 2
-            </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
-              Categoría 3
-            </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none">
-              Categoría 4
-            </button>
+            {data.map((category) => (
+              <button
+                key={category.id}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none"
+              >
+                {category.name}
+              </button>
+            ))}
           </div>
         </div>
 
