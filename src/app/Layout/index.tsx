@@ -4,6 +4,7 @@ import { FaBars, FaUserShield, FaWarehouse } from "react-icons/fa";
 import { IoIosPeople, IoMdCash, IoMdClose, IoMdHome } from "react-icons/io";
 import { RiFileChartLine } from "react-icons/ri";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/context/login-store";
 
 interface LayoutRootProps {
   children: React.ReactNode;
@@ -43,7 +44,8 @@ const navigation = [
 ];
 
 const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
-  const [login, setLogin] = useState(true);
+  const login = useAuthStore((state) => state.status);
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -194,13 +196,10 @@ const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
                       href="#"
                       className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                     >
-                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-500">
-                        <span className="text-sm font-medium leading-none text-white">
-                          AD
-                        </span>
-                      </span>
                       <span className="sr-only">Your profile</span>
-                      <span aria-hidden="true">Admin</span>
+                      <span aria-hidden="true">
+                        👋 Hello <strong> {user?.name} </strong> 🎉
+                      </span>
                     </a>
                   </li>
                 </ul>

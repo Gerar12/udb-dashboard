@@ -4,6 +4,7 @@ import LayoutRoot from "./Layout";
 import { Suspense } from "react";
 import SkeletonUI from "./skeleton";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ const App = () => {
       <BrowserRouter>
         <LayoutRoot>
           <Suspense fallback={<SkeletonUI />}>
+            <Toaster />
             <Router />
           </Suspense>
         </LayoutRoot>

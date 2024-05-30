@@ -1,13 +1,40 @@
+import { useAuthStore } from "@/context/login-store";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { loginType } from "@/types";
+import { BounceLoader } from "react-spinners";
+import { fetchLogin } from "@/hooks/user";
+import { toast } from "sonner";
 
 const Login = () => {
-  const [login, setLogin] = useState(true);
+  const loginStatus = useAuthStore((state) => state.status);
+  const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const { register, reset, handleSubmit } = useForm<loginType>();
+  const [loading, setLoading] = useState(false);
 
+  const handleLogin = async (data: loginType) => {
+    setLoading(true);
+    console.log(data);
+    try {
+      const response = await fetchLogin(data);
+      login(response.user, response.token);
+      setTimeout(() => {
+        toast.success("Login successful! 🎉");
+      }, 1000);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to login! 😢");
+    } finally {
+      setLoading(false);
+      reset();
+    }
+  };
   useEffect(() => {
-    if (login) navigate("/");
-  }, [login, navigate]);
+    if (loginStatus) navigate("/");
+  }, [loginStatus, navigate]);
 
   return (
     <>
@@ -19,7 +46,10 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            className="space-y-6"
+            onSubmit={handleSubmit((data) => handleLogin(data))}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -30,11 +60,11 @@ const Login = () => {
               <div className="mt-2">
                 <input
                   id="email"
-                  name="email"
+                  {...register("email")}
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -47,23 +77,15 @@ const Login = () => {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-gray-600 hover:text-gray-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
                   id="password"
-                  name="password"
+                  {...register("password")}
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -71,9 +93,10 @@ const Login = () => {
             <div>
               <button
                 type="submit"
+                disabled={loading}
                 className="flex w-full justify-center rounded-md bg-gray-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 duration-700"
               >
-                Sign in
+                {loading ? <BounceLoader color="#fff" size={20} /> : "Sign in"}
               </button>
             </div>
           </form>

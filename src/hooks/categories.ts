@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api/categorie";
+import { api } from "@/api";
 import { CategorieType } from "@/types";
 const fetchCategories = async () => {
   try {

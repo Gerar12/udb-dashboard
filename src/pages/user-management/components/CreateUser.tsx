@@ -1,13 +1,24 @@
 import React from "react";
 import { toast } from "sonner";
+import type { registerType } from "@/types";
+import { useForm } from "react-hook-form";
+import { fetchRegister } from "@/hooks/register";
 
 type OnCloseFunction = () => void;
 
 const CreateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
-  const handleSubmit = (event: React.FormEvent) => {
-    toast.success("User created");
-    event.preventDefault();
-    onClose();
+  const { register, handleSubmit, reset } = useForm<registerType>();
+  const handleRegister = (data: registerType) => {
+    console.log(data);
+    try {
+      fetchRegister(data);
+      toast.success("User created successfully");
+      reset();
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to create user");
+    }
   };
 
   return (
@@ -25,7 +36,7 @@ const CreateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
         </span>
 
         <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit((data) => handleRegister(data))}>
             <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="w-full">
@@ -35,41 +46,21 @@ const CreateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                   <div className="mt-2">
                     <div>
                       <label
-                        htmlFor="username"
+                        htmlFor="name"
                         className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                       >
-                        Username
+                        Full Name
                       </label>
                       <input
                         type="text"
-                        name="username"
-                        id="username"
-                        autoComplete="username"
-                        required
+                        {...register("name", { required: true })}
+                        id="name"
+                        autoComplete="name"
                         className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full 
                                                 shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
                       />
                     </div>
-                    <div className="mt-4">
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                      >
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        autoComplete="name"
-                        required
-                        className="mt-1 
-                                                focus:ring-primary-500 focus:border-primary-500 
-                                                block w-full shadow-sm sm:text-lg font-semibold
-                                                border-gray-300 
-                                                rounded-md"
-                      />
-                    </div>
+
                     <div className="mt-4">
                       <label
                         htmlFor="email"
@@ -79,10 +70,9 @@ const CreateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                       </label>
                       <input
                         type="email"
-                        name="email"
+                        {...register("email", { required: true })}
                         id="email"
                         autoComplete="email"
-                        required
                         className="mt-1 focus:ring-primary-500 
                                                 focus:border-primary-500 block 
                                                 w-full shadow-sm sm:text-lg font-semibold 
@@ -91,26 +81,21 @@ const CreateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
                     </div>
                     <div className="mt-4">
                       <label
-                        htmlFor="userType"
+                        htmlFor="password"
                         className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                       >
-                        User Type
+                        Password
                       </label>
-                      <select
-                        id="userType"
-                        name="userType"
-                        autoComplete="userType"
-                        required
-                        className="mt-1 block
-                                                 w-full py-2 pl-3 pr-10 border 
-                                                 border-gray-300 bg-white dark:bg-gray-700 
-                                                 text-gray-900 dark:text-gray-200 rounded-md shadow-sm 
-                                                 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      >
-                        <option value="administrator">Administrator</option>
-                        <option value="editor">Editor</option>
-                        <option value="viewer">Viewer</option>
-                      </select>
+                      <input
+                        type="password"
+                        {...register("password", { required: true })}
+                        id="password"
+                        autoComplete="password"
+                        className="mt-1 
+                                                focus:ring-primary-500 focus:border-primary-500 
+                                                block w-full shadow-sm sm:text-lg font-semibold
+                                                border-gray-300 rounded-md"
+                      />
                     </div>
                   </div>
                 </div>

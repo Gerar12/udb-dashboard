@@ -1,15 +1,28 @@
+import { UserType } from "@/types";
 import { create } from "zustand";
 
-interface AuthState {
+export interface useAuthStoreType {
+  user: UserType | null;
+  token: string | null;
   status: boolean;
-  user?: {
-    name: string;
-    email: string;
-  };
+  logout: () => void;
+  login: (user: UserType, token: string) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<useAuthStoreType>((set) => ({
   status: false,
-  user: undefined,
-  token: undefined,
+  user: null,
+  token: null,
+  login: (user, token) =>
+    set(() => ({
+      user,
+      token,
+      status: true,
+    })),
+  logout: () =>
+    set(() => ({
+      user: null,
+      token: null,
+      status: false,
+    })),
 }));
