@@ -1,7 +1,7 @@
 import { UserType } from "@/types";
 import { create } from "zustand";
 
-export interface useAuthStoreType {
+interface useAuthStoreType {
   user: UserType | null;
   token: string | null;
   status: boolean;

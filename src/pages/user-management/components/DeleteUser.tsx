@@ -1,13 +1,24 @@
-import React from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
+import { deleteUserByID } from "@/hooks/deleteUser";
 
-type OnCloseFunction = () => void;
+interface DeleteUserProps {
+  onClose: () => void;
+  id: number;
+}
 
-const DeleteUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
-  const handleDelete = () => {
-    toast.error("User deleted");
-    onClose();
+const DeleteUser = ({ onClose, id }: DeleteUserProps) => {
+  const handleDelete = async () => {
+    try {
+      await deleteUserByID(id);
+      toast.success("User deleted");
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast.error("There is an error when trying to delete this user");
+    } finally {
+      onClose();
+    }
   };
 
   return (

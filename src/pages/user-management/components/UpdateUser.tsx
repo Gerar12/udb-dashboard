@@ -1,27 +1,40 @@
-import React, { useState } from "react";
 import { toast } from "sonner";
+import { useGetUserByID } from "@/hooks/getUserByEmail";
+import { useForm } from "react-hook-form";
+import { registerType } from "@/types";
+import { UseputUpdateUser } from "@/hooks/putUpdateUser";
 
-type OnCloseFunction = () => void;
+interface UpdateUserProps {
+  onClose: () => void;
+  email: string;
+}
 
-const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
-  const handleSubmit = (event: React.FormEvent) => {
-    toast.info("User updated");
-    event.preventDefault();
-    onClose();
-  };
+const UpdateUser = ({ onClose, email }: UpdateUserProps) => {
+  const { data, isLoading } = useGetUserByID(email);
 
-  const [formData, setFormData] = useState({
-    username: "Guamamole",
-    name: "Carlos Soto",
-    email: "carlos@mail.com",
-    userType: "administrator",
+  const user = data?.[0];
+  console.log(user);
+  const { register, handleSubmit, reset } = useForm<registerType>({
+    defaultValues: {
+      name: user?.name,
+      email: user?.email,
+      password: "",
+    },
   });
-
-  const handleChange = (e: any) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleUpdate = async (data: registerType) => {
+    console.log("User updated successfully");
+    console.log(data);
+    try {
+      await UseputUpdateUser(user?.id as number, data);
+      toast.success("User updated successfully");
+      console.log(data);
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to update user");
+    } finally {
+      reset();
+    }
   };
 
   return (
@@ -39,114 +52,92 @@ const UpdateUser: React.FC<{ onClose: OnCloseFunction }> = ({ onClose }) => {
         </span>
 
         <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <form onSubmit={handleSubmit}>
-            <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div className="sm:flex sm:items-start">
-                <div className="w-full">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
-                    Update User
-                  </h3>
-                  <div className="mt-2">
-                    <div>
-                      <label
-                        htmlFor="username"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                      >
-                        Username
-                      </label>
-                      <input
-                        type="text"
-                        name="username"
-                        id="username"
-                        autoComplete="username"
-                        required
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="mt-1 focus:ring-primary-500 
+          {isLoading ? (
+            <>
+              <h1>Cargando....</h1>
+            </>
+          ) : (
+            <>
+              <form onSubmit={handleSubmit((data) => handleUpdate(data))}>
+                <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="w-full">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
+                        Update User
+                      </h3>
+                      <div className="mt-2">
+                        <div>
+                          <label
+                            htmlFor="name"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                          >
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            {...register("name", { required: true })}
+                            name="name"
+                            id="name"
+                            autoComplete="name"
+                            className="mt-1 focus:ring-primary-500 
                                                 focus:border-primary-500 block w-full 
                                                 shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="mt-4">
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                      >
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        autoComplete="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="mt-4">
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        autoComplete="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="mt-4">
-                      <label
-                        htmlFor="userType"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                      >
-                        User Type
-                      </label>
-                      <select
-                        id="userType"
-                        name="userType"
-                        autoComplete="userType"
-                        required
-                        value={formData.userType}
-                        onChange={handleChange}
-                        className="mt-1 block w-full py-2 pl-3 pr-10 border 
-                                                border-gray-300 bg-white dark:bg-gray-700 text-gray-900 
-                                                dark:text-gray-200 rounded-md shadow-sm focus:outline-none 
-                                                focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      >
-                        <option value="administrator">Administrator</option>
-                        <option value="editor">Editor</option>
-                        <option value="viewer">Viewer</option>
-                      </select>
+                          />
+                        </div>
+                        <div className="mt-4">
+                          <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                          >
+                            Email
+                          </label>
+                          <input
+                            {...register("email", { required: true })}
+                            type="email"
+                            name="email"
+                            id="email"
+                            autoComplete="email"
+                            className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
+                          />
+                        </div>
+                        <div className="mt-4">
+                          <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                          >
+                            New Password
+                          </label>
+                          <input
+                            type="password"
+                            {...register("password")}
+                            name="password"
+                            id="email"
+                            autoComplete="password"
+                            className="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-lg font-semibold border-gray-300 rounded-md"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <button
-                type="submit"
-                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm"
-              >
-                Update
-              </button>
-              <button
-                onClick={onClose}
-                type="button"
-                className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+                <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="submit"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={onClose}
+                    type="button"
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </div>
