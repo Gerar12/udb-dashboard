@@ -44,3 +44,15 @@ export interface user {
   created_at: any;
   updated_at: any;
 }
+
+export type Products = Product[];
+
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  stock: number;
+  category_name: string;
+  supplier_name: string;
+}

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Modal } from "./components/modal";
 import { EditModal } from "./components/edit-modal";
 import { useFetchCategories } from "@/hooks/categories";
+import { useFetchProduct } from "@/hooks/useProduct";
+import { Product, Products } from "@/types";
 
 const stats = [
   { name: "Total de productos", stat: "50" },
@@ -10,9 +12,12 @@ const stats = [
 ];
 
 const Inventory = () => {
+  const { data: products, isLoading: isLoadingProducts } = useFetchProduct();
+  console.log(products, isLoadingProducts);
   const [open, setOpen] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const { data, isLoading } = useFetchCategories();
+  //Estadusutucas de la tabla
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -41,7 +46,7 @@ const Inventory = () => {
                     {item.name}
                   </dt>
                   <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-                    {item.stat}
+                    {products?.length}
                   </dd>
                 </div>
               ))}
@@ -147,7 +152,7 @@ const Inventory = () => {
         </th> */}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          {/* <tbody className="bg-white divide-y divide-gray-200">
             <tr className="bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">1</td>
               <td className="px-6 py-4 whitespace-nowrap">#784767</td>
@@ -226,7 +231,10 @@ const Inventory = () => {
                 </button>
               </td>
             </tr>
-          </tbody>
+          </tbody> */}
+          {products?.map((item) => (
+            <>{item?.stock}</>
+          ))}
         </table>
       </div>
     </div>
