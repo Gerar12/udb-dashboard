@@ -6,21 +6,20 @@ import { useGetUsers } from "@/hooks/getUsers";
 import { useAuthStore } from "@/context/login-store";
 import { Toaster } from "sonner";
 import {
-  MagnifyingGlassIcon,
   PencilSquareIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
 
 const UserManager = () => {
-  const [userEmail, setUserEmail] = useState<string>();
-
+  const [userEmail, setUserEmail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const { data, isLoading } = useGetUsers();
-
   const userAuth = useAuthStore((state) => state.user);
+  const [name, setName] = useState("");
+  const [id, setId] = useState(0);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -34,17 +33,20 @@ const UserManager = () => {
     setIsModalOpen(false);
   };
 
-  const openModalUpdate = (email: string) => {
+  const openModalUpdate = (email: string, name: string, id: number) => {
     setIsModalUpdateOpen(true);
     setUserEmail(email);
+    setName(name);
+    setId(id);
   };
 
   const closeModalUpdate = () => {
     setIsModalUpdateOpen(false);
   };
 
-  const openModalDelete = () => {
+  const openModalDelete = (name: string) => {
     setIsModalDeleteOpen(true);
+    setName(name);
   };
 
   const closeModalDelete = () => {
@@ -60,23 +62,7 @@ const UserManager = () => {
         <div className="bg-white  relative  overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div className="w-full md:w-1/2">
-              <form className="flex items-center">
-                <label htmlFor="simple-search" className="sr-only">
-                  Search
-                </label>
-                <div className="relative w-full">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <MagnifyingGlassIcon className="w-5 h-5 text-gray-500 " />
-                  </div>
-                  <input
-                    type="text"
-                    id="simple-search"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 "
-                    placeholder="Search"
-                    required
-                  />
-                </div>
-              </form>
+              <h2 className="text-2xl">Users All</h2>
             </div>
             {isModalOpen && <CreateUser onClose={closeModal} />}
             <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
@@ -118,7 +104,9 @@ const UserManager = () => {
                       <Toaster richColors />
                       <button
                         type="button"
-                        onClick={() => openModalUpdate(user.email)}
+                        onClick={() =>
+                          openModalUpdate(user.email, user.name, user.id)
+                        }
                         data-modal-target="updateUserModal"
                         data-modal-toggle="updateUserModal"
                         className="flex w-full items-center py-2 px-4 hover:bg-gray-100 "
@@ -129,12 +117,18 @@ const UserManager = () => {
                       {isModalUpdateOpen && (
                         <UpdateUser
                           onClose={closeModalUpdate}
-                          email={userEmail as string}
+                          email={userEmail}
+                          id={id}
+                          name={name}
                         />
                       )}
                       <Toaster richColors />
                       {isModalDeleteOpen && (
-                        <DeleteUser onClose={closeModalDelete} id={user.id} />
+                        <DeleteUser
+                          onClose={closeModalDelete}
+                          id={user.id}
+                          name={`${name}`}
+                        />
                       )}
 
                       {userAuth?.email === user.email ? (
@@ -144,7 +138,7 @@ const UserManager = () => {
                       ) : (
                         <button
                           type="button"
-                          onClick={() => openModalDelete()}
+                          onClick={() => openModalDelete(user.name)}
                           data-modal-target="deleteModal"
                           data-modal-toggle="deleteModal"
                           className="flex w-full items-center py-2 px-4 hover:bg-gray-100  text-red-500 dark:hover:text-red-400"

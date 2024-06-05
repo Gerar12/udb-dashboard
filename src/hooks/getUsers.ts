@@ -14,6 +14,7 @@ const useGetUsers = () => {
   return useQuery<Users>({
     queryKey: ["users"],
     queryFn: fetchUsers,
+    refetchInterval: 2000,
   });
 };
 

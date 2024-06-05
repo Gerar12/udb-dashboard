@@ -45,8 +45,6 @@ export interface user {
   updated_at: any;
 }
 
-export type Products = Product[];
-
 export interface Product {
   id: number;
   name: string;
@@ -55,4 +53,30 @@ export interface Product {
   stock: number;
   category_name: string;
   supplier_name: string;
+}
+
+export interface ClientsTypes {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+export interface SalesTypes {
+  id: number;
+  client_id: number;
+  product_id: number;
+  quantity: number;
+  total_price: string;
+  date: string;
+  client: Client;
+  product: Product;
+}
+
+export interface Client {
+  id: number;
+  username: string;
+  email: string;
+  name: string;
+  phone: string;
 }

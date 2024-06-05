@@ -5,9 +5,10 @@ import { deleteUserByID } from "@/hooks/deleteUser";
 interface DeleteUserProps {
   onClose: () => void;
   id: number;
+  name: string;
 }
 
-const DeleteUser = ({ onClose, id }: DeleteUserProps) => {
+const DeleteUser = ({ onClose, id, name }: DeleteUserProps) => {
   const handleDelete = async () => {
     try {
       await deleteUserByID(id);
@@ -55,8 +56,8 @@ const DeleteUser = ({ onClose, id }: DeleteUserProps) => {
                 </h3>
                 <div className="mt-2">
                   <p className="text-sm text-gray-300">
-                    Are you sure you want to delete user{" "}
-                    <strong>Guacamole</strong>?
+                    Are you sure you want to delete user <strong>{name}</strong>
+                    ?
                   </p>
                 </div>
               </div>
