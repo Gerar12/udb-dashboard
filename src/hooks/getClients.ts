@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
-import { ClientsTypes } from "@/types";
+import { Client } from "@/types";
 const fetcClients = async () => {
   try {
     const { data } = await api.get("/clients");
@@ -11,7 +11,7 @@ const fetcClients = async () => {
 };
 
 const useGetClients = () => {
-  return useQuery<ClientsTypes[]>({
+  return useQuery<Client[]>({
     queryKey: ["clients"],
     queryFn: fetcClients,
   });

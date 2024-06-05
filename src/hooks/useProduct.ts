@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
 
-import { Product, Products } from "@/types";
+import { Product } from "@/types";
 const fetchCProduct = async () => {
   try {
     const { data } = await api.get<Product[]>("/products");

@@ -55,13 +55,6 @@ export interface Product {
   supplier_name: string;
 }
 
-export interface ClientsTypes {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
 export interface SalesTypes {
   id: number;
   client_id: number;

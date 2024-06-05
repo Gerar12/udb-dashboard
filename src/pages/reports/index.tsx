@@ -1,25 +1,32 @@
-import React from "react";
+import { useGetSales } from "@/hooks/getSales";
 
 const ReportsPage = () => {
+  const { data, error, isLoading } = useGetSales();
+
   // Funciones para las acciones de los botones (generar, buscar, eliminar, imprimir, enviar)
   const handleGenerateReport = () => {
     // Lógica para generar un reporte
+    console.log("Reporte generado");
   };
 
   const handleSearchReport = () => {
     // Lógica para buscar un reporte
+    console.log("Reporte encontrado");
   };
 
   const handleDeleteReport = () => {
     // Lógica para eliminar un reporte
+    console.log("Reporte eliminado");
   };
 
   const handlePrintReport = () => {
     // Lógica para imprimir un reporte
+    console.log("Reporte impreso");
   };
 
   const handleSendReport = () => {
     // Lógica para enviar un reporte por correo electrónico u otro medio
+    console.log("Reporte enviado");
   };
 
   // Ejemplo de datos del reporte
