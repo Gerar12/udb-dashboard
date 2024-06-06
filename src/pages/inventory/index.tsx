@@ -3,7 +3,7 @@ import { Modal } from "./components/modal";
 import { EditModal } from "./components/edit-modal";
 import { useFetchCategories } from "@/hooks/categories";
 import { useFetchProduct } from "@/hooks/useProduct";
-import { Product, Products } from "@/types";
+import { Product } from "@/types";
 
 const stats = [
   { name: "Total de productos", stat: "50" },
@@ -16,8 +16,8 @@ const Inventory = () => {
   console.log(products, isLoadingProducts);
   const [open, setOpen] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { data, isLoading } = useFetchCategories();
-  //Estadusutucas de la tabla
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -56,10 +56,15 @@ const Inventory = () => {
           <br></br>
 
           <div className="flex space-x-4">
-            {data.map((category) => (
+            {data.map((category, index) => (
               <button
                 key={category.id}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none"
+                className={`px-4 py-2 rounded-md focus:outline-none ${
+                  index === 0 ? "bg-green-500 text-white" : 
+                  index === 1 ? "bg-blue-500 text-white" :
+                  index === 2 ? "bg-blue-300 text-white" : 
+                  "bg-gray-200 text-gray-700"
+                } hover:bg-opacity-80`}
               >
                 {category.name}
               </button>
@@ -89,154 +94,89 @@ const Inventory = () => {
               />
             </svg>
           </div>
-          {/* Botón envuelto dentro del componente Link */}
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-            onClick={() => {
-              setOpen(!open);
-            }}
-          >
-            Agregar Nuevo producto
-          </button>
+
+          {/* Menú desplegable  */}
+          <div className="relative">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+              }}
+            >
+              Opciones de Inventario
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300">
+                <button
+                  className="block w-full text-left px-4 py-2 text-green-500 hover:bg-green-100"
+                  onClick={() => {
+                    setOpen(true);
+                    setMenuOpen(false);
+                  }}
+                >
+                  Agregar Nuevo Producto
+                </button>
+                <button className="block w-full text-left px-4 py-2 text-blue-500 hover:bg-blue-100">
+                  Agregar Nueva Categoria
+                </button>
+                <button className="block w-full text-left px-4 py-2 text-blue-300 hover:bg-blue-100"
+                onClick={() => {
+                  setEditModal(!editModal);
+                }}>
+                  Editar/Eliminar Categoria
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Numero
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                ID del producto
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Nombre del producto
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Descripcion del producto
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Precio
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Categoria
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Numero en existencias
-              </th>
-              {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Acciones
-        </th> */}
-            </tr>
-          </thead>
-          {/* <tbody className="bg-white divide-y divide-gray-200">
-            <tr className="bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap">1</td>
-              <td className="px-6 py-4 whitespace-nowrap">#784767</td>
-              <td className="px-6 py-4 whitespace-nowrap">Producto 1</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                Descripción del Producto 1
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
-              <td className="px-6 py-4 whitespace-nowrap">Categoría 1</td>
-              <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
-                <span className="inline-block bg-green-500 text-white px-2 py-1 rounded-md">
-                  25
-                </span>
-                <button className="text-red-500 hover:text-red-700 focus:outline-none">
-                  Eliminar
-                </button>
-                <button
-                  className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                  onClick={() => {
-                    setEditModal(!editModal);
-                  }}
-                >
-                  Editar
-                </button>
-              </td>
-            </tr>
-            <tr className="bg-white">
-              <td className="px-6 py-4 whitespace-nowrap">2</td>
-              <td className="px-6 py-4 whitespace-nowrap">#784768</td>
-              <td className="px-6 py-4 whitespace-nowrap">Producto 2</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                Descripción del Producto 2
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
-              <td className="px-6 py-4 whitespace-nowrap">Categoría 2</td>
-              <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
-                <span className="inline-block bg-yellow-500 text-white px-2 py-1 rounded-md">
-                  10
-                </span>
-                <button className="text-red-500 hover:text-red-700 focus:outline-none">
-                  Eliminar
-                </button>
-                <button
-                  className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                  onClick={() => {
-                    setEditModal(!editModal);
-                  }}
-                >
-                  Editar
-                </button>
-              </td>
-            </tr>
-            <tr className="bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap">3</td>
-              <td className="px-6 py-4 whitespace-nowrap">#784769</td>
-              <td className="px-6 py-4 whitespace-nowrap">Producto 3</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                Descripción del Producto 3
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">$0.00</td>
-              <td className="px-6 py-4 whitespace-nowrap">Categoría 3</td>
-              <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
-                <span className="inline-block bg-red-500 text-white px-2 py-1 rounded-md">
-                  0
-                </span>
-                <button className="text-red-500 hover:text-red-700 focus:outline-none">
-                  Eliminar
-                </button>
-                <button
-                  className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                  onClick={() => {
-                    setEditModal(!editModal);
-                  }}
-                >
-                  Editar
-                </button>
-              </td>
-            </tr>
-          </tbody> */}
-          {products?.map((item) => (
-            <>{item?.stock}</>
-          ))}
-        </table>
-      </div>
+  <table className="min-w-full divide-y divide-gray-200">
+    <thead className="bg-gray-50">
+      <tr>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Numero</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID del producto</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre del producto</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción del producto</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Numero en existencias</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+      </tr>
+    </thead>
+    <tbody className="bg-white divide-y divide-gray-200">
+      {products?.map((item, index) => (
+        <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+          <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{item.id}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{item.description}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{item.price}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{item.category_name}</td>
+          <td className="px-6 py-4 whitespace-nowrap">
+            <span className={`inline-block px-2 py-1 rounded-md ${item.stock > 0 ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+              {item.stock}
+            </span>
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap flex space-x-2 items-center">
+            <button className="text-red-500 hover:text-red-700 focus:outline-none">
+              Eliminar
+            </button>
+            <button
+              className="text-blue-500 hover:text-blue-700 focus:outline-none"
+              onClick={() => {
+                setEditModal(!editModal);
+              }}
+            >
+              Editar
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
     </div>
   );
 };

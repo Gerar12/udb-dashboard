@@ -31,7 +31,7 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
           <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Editar Producto
+                Editar Categoria
               </h3>
               <form className="mt-5 space-y-6">
                 <div className="mb-4">
