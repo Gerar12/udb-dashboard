@@ -73,3 +73,9 @@ export interface Client {
   name: string;
   phone: string;
 }
+
+export interface ProductUpdateType {
+  productID: number;
+  newQuantity: number;
+  movementType: string;
+}
