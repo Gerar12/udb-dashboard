@@ -74,8 +74,18 @@ export interface Client {
   phone: string;
 }
 
-export interface ProductUpdateType {
-  productID: number;
-  newQuantity: number;
-  movementType: string;
+export interface ProductType {
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category_id: number;
+  supplier_id: number;
+}
+
+export interface SuppliersType {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
 }

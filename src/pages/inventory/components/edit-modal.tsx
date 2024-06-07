@@ -1,27 +1,70 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useFetchCategories } from "@/hooks/categories";
+import { useSuppliers } from "@/hooks/getSuppliers";
+import { Product } from "@/types";
+import { toast } from "sonner";
+import { updateProduct } from "@/hooks/updateProduct";
 
 interface EditModalProps {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: () => void;
+  product: Product | undefined;
 }
 
-const EditModal = ({ open, setOpen }: EditModalProps) => {
-  const [id, setId] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [stock, setStock] = useState("");
+interface ProductType {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  stock: number;
+  category_id: number;
+  supplier_id: number;
+}
+
+const EditModal = ({ open, setOpen, product }: EditModalProps) => {
+  const { data: categories } = useFetchCategories();
+  const { data: suppliers } = useSuppliers();
+
+  const { register, handleSubmit, reset } = useForm<ProductType>({
+    defaultValues: {
+      name: product?.name,
+      description: product?.description,
+      price: product?.price,
+      category_id: product?.id,
+      supplier_id: product?.id,
+      stock: product?.stock,
+    },
+  });
+
+  useEffect(() => {
+    if (product) {
+      reset(product);
+    }
+  }, [product, reset]);
 
   if (!open) return null;
+
+  const handleUpdate = async (data: ProductType) => {
+    try {
+      await updateProduct(data as any, product!.id);
+      setOpen();
+      toast.success("Producto actualizado");
+      reset();
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al actualizar el producto");
+    }
+  };
 
   return (
     <>
       <div className="fixed z-10 inset-0 overflow-y-auto">
         <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-          <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-          </div>
+          <div
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            aria-hidden="true"
+          ></div>
           <span
             className="hidden sm:inline-block sm:align-middle sm:h-screen"
             aria-hidden="true"
@@ -33,22 +76,10 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
               <h3 className="text-lg font-medium leading-6 text-gray-900">
                 Editar Producto
               </h3>
-              <form className="mt-5 space-y-6">
-                <div className="mb-4">
-                  <label
-                    htmlFor="id"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    ID del Producto
-                  </label>
-                  <input
-                    type="text"
-                    id="id"
-                    className="mt-1 px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
-                  />
-                </div>
+              <form
+                className="mt-5 space-y-6"
+                onSubmit={handleSubmit((data) => handleUpdate(data))}
+              >
                 <div className="mb-4">
                   <label
                     htmlFor="name"
@@ -59,9 +90,8 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
                   <input
                     type="text"
                     id="name"
+                    {...register("name", { required: true })}
                     className="mt-1 px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
@@ -73,10 +103,9 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
                   </label>
                   <textarea
                     id="description"
+                    {...register("description", { required: true })}
                     rows={3}
                     className="mt-1 px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
                 <div className="mb-4">
@@ -88,26 +117,48 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
                   </label>
                   <input
                     type="text"
+                    {...register("price", { required: true })}
                     id="price"
                     className="mt-1 px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
                   <label
                     htmlFor="category"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-gray-700 text-sm  mb-2"
                   >
                     Categoría
                   </label>
-                  <input
-                    type="text"
+                  <select
                     id="category"
-                    className="mt-1 px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  />
+                    {...register("category_id", { required: true })}
+                    className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                  >
+                    {categories?.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="supplier"
+                    className="block text-gray-700 text-sm mb-2"
+                  >
+                    Supplier
+                  </label>
+                  <select
+                    id="supplier"
+                    {...register("supplier_id", { required: true })}
+                    className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                  >
+                    {suppliers?.map((supplier) => (
+                      <option key={supplier.id} value={supplier.id}>
+                        {supplier.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="mb-4">
                   <label
@@ -118,10 +169,9 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
                   </label>
                   <input
                     type="text"
+                    {...register("stock", { required: true })}
                     id="stock"
                     className="mt-1 px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
                   />
                 </div>
                 <div className="mt-6">
@@ -134,7 +184,7 @@ const EditModal = ({ open, setOpen }: EditModalProps) => {
                   <button
                     type="button"
                     className="inline-flex justify-center w-full px-4 py-2 mt-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    onClick={() => setOpen(false)}
+                    onClick={setOpen}
                   >
                     Cancelar
                   </button>

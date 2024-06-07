@@ -3,6 +3,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PDF } from "./components/PDF";
 import { ChartSales } from "./components/SalesBarChart";
 import { useAuthStore } from "@/context/login-store";
+
 const ReportsPage = () => {
   const user = useAuthStore((state) => state.user);
   const { data } = useGetSales();
@@ -29,15 +30,14 @@ const ReportsPage = () => {
           </PDFDownloadLink>
         </div>
       </div>
-      {/* Tarjeta de ejemplo para mostrar un reporte */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           Reporte de Ventas
         </h3>
-        <p className="text-sm text-gray-600 mb-4">date: "Abril 2024"</p>
+        <p className="text-sm text-gray-600 mb-4">{Date()}</p>
         <p className="text-gray-700">
-          Este es un reporte de ejemplo que muestra las ventas del mes de abril
-          de 2024. Incluye información sobre los productos vendidos, precios,
+          Este es un reporte de ejemplo que muestra las ventas del mes de
+          actual. Incluye información sobre los productos vendidos, precios,
           clientes, etc.
         </p>
         <div className="overflow-x-auto">

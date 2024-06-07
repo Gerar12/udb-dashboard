@@ -1,19 +1,44 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import { useFetchCategories } from "@/hooks/categories";
+import { addProducts } from "@/hooks/addProduct";
+import { ProductType } from "@/types";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { useSuppliers } from "@/hooks/getSuppliers";
 
 interface modalprops {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
+  const { data: provedores } = useSuppliers();
+
+  const { register, handleSubmit, reset } = useForm<ProductType>();
+  const [loading, setLoading] = useState(false);
   const { data } = useFetchCategories();
+
   const cancelButtonRef = useRef(null);
 
   if (!data) {
     return <div>Loading....</div>;
   }
+
+  const handleNewProduct = async (data: ProductType) => {
+    setLoading(true);
+    try {
+      await addProducts(data);
+      toast.success("Producto agregado correctamente");
+      setOpen(false);
+      reset();
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocurrió un error al agregar el producto");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -47,7 +72,7 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                <Dialog.Panel className="relative  transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                       <ExclamationTriangleIcon
@@ -62,25 +87,16 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                       >
                         Estas ingresando un nuevo producto
                       </Dialog.Title>
-                      {/* contenido del modal */}
                       <div className="p-6">
                         <h1 className="text-3xl font-bold text-gray-800 mb-4">
                           Agregar Nuevo Producto
                         </h1>
-                        <form className="max-w-lg mx-auto">
-                          <div className="mb-4">
-                            <label
-                              htmlFor="id"
-                              className="block text-gray-700 text-sm font-bold mb-2"
-                            >
-                              ID del Producto
-                            </label>
-                            <input
-                              type="text"
-                              id="id"
-                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
-                            />
-                          </div>
+                        <form
+                          className="max-w-lg mx-auto"
+                          onSubmit={handleSubmit((data) =>
+                            handleNewProduct(data)
+                          )}
+                        >
                           <div className="mb-4">
                             <label
                               htmlFor="name"
@@ -90,6 +106,7 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                             </label>
                             <input
                               type="text"
+                              {...register("name", { required: true })}
                               id="name"
                               className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
                             />
@@ -103,6 +120,7 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                             </label>
                             <textarea
                               id="description"
+                              {...register("description", { required: true })}
                               rows={4}
                               className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
                             ></textarea>
@@ -116,6 +134,7 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                             </label>
                             <input
                               type="text"
+                              {...register("price")}
                               id="price"
                               className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
                             />
@@ -129,11 +148,32 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                             </label>
                             <select
                               id="category"
+                              {...register("category_id", { required: true })}
                               className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
                             >
                               {data.map((category) => (
                                 <option key={category.id} value={category.id}>
                                   {category.name}
+                                </option>
+                              ))}
+                              {/* Agrega más opciones de categorías aquí */}
+                            </select>
+                          </div>
+                          <div className="mb-4">
+                            <label
+                              htmlFor="suppliers"
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Puppliers
+                            </label>
+                            <select
+                              id="suppliers"
+                              {...register("supplier_id", { required: true })}
+                              className="px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-400"
+                            >
+                              {provedores?.map((provedor) => (
+                                <option key={provedor.id} value={provedor.id}>
+                                  {provedor.name}
                                 </option>
                               ))}
                               {/* Agrega más opciones de categorías aquí */}
@@ -155,6 +195,7 @@ const Modal: React.FC<modalprops> = ({ open, setOpen }) => {
                               </button>
                               <input
                                 type="text"
+                                {...register("stock", { required: true })}
                                 id="stock"
                                 className="px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-400 w-full"
                               />

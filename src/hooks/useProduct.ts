@@ -15,6 +15,7 @@ const useFetchProduct = () => {
   return useQuery({
     queryKey: ["product"],
     queryFn: fetchCProduct,
+    refetchInterval: 2000,
   });
 };
 
