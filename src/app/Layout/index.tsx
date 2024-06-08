@@ -1,10 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaBars, FaUserShield, FaWarehouse } from "react-icons/fa";
-import { IoIosPeople, IoMdCash, IoMdClose, IoMdHome } from "react-icons/io";
+import {
+  IoIosLogIn,
+  IoIosPeople,
+  IoMdCash,
+  IoMdClose,
+  IoMdHome,
+} from "react-icons/io";
 import { RiFileChartLine } from "react-icons/ri";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/context/login-store";
+import { LogoutModal } from "./ModalLogout";
 
 interface LayoutRootProps {
   children: React.ReactNode;
@@ -48,6 +55,14 @@ const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [modalLogout, setModalLogout] = useState(false);
+
+  const openModalLogout = () => {
+    setSidebarOpen(false);
+    setTimeout(() => {
+      setModalLogout(true);
+    }, 500);
+  };
 
   useEffect(() => {
     if (!login) navigate("/login");
@@ -59,6 +74,7 @@ const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
         <>{children}</>
       ) : (
         <div>
+          <LogoutModal modal={setModalLogout} open={modalLogout} />
           <Transition.Root show={sidebarOpen} as={Fragment}>
             <Dialog
               as="div"
@@ -144,6 +160,15 @@ const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
                                   </NavLink>
                                 </li>
                               ))}
+                              <li>
+                                <button
+                                  className="  group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold item-center bg-red-500 w-full justify-center hover:bg-red-600 duration-300 text-white items-center mt-20 "
+                                  onClick={openModalLogout}
+                                >
+                                  <IoIosLogIn className="" />
+                                  Logout
+                                </button>
+                              </li>
                             </ul>
                           </li>
                         </ul>
@@ -188,6 +213,15 @@ const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
                           </NavLink>
                         </li>
                       ))}
+                      <li>
+                        <button
+                          className="  group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold item-center bg-red-500 w-full justify-center hover:bg-red-600 duration-300 text-white items-center mt-20 "
+                          onClick={openModalLogout}
+                        >
+                          <IoIosLogIn className="" />
+                          Logout
+                        </button>
+                      </li>
                     </ul>
                   </li>
 
@@ -219,14 +253,7 @@ const LayoutRoot: React.FC<LayoutRootProps> = ({ children }) => {
             <div className="flex-1 text-sm font-semibold leading-6 text-white">
               Dashboard
             </div>
-            <a href="#">
-              <span className="sr-only">Your profile</span>
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-500">
-                <span className="text-sm font-medium leading-none text-white">
-                  AD
-                </span>
-              </span>
-            </a>
+            <p className="text-white">OKU</p>
           </div>
 
           <main className="py-10 lg:pl-72">
